@@ -1,5 +1,5 @@
 const corsConfig = {
-  origin: ["http://localhost:8080", process.env.CLIENT_URL],
+  origin: [process.env.CLIENT_URL],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
