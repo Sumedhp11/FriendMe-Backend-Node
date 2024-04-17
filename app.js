@@ -19,7 +19,7 @@ import {
 } from "./constants/events.js";
 import { getSockets } from "./lib/Helper.js";
 import { Message } from "./models/message-model.js";
-import { corsConfig } from "./constants/config.js";
+
 import { socketAuthenticator } from "./middlewares/auth.js";
 
 import userRoute from "./routes/user-routes.js";
@@ -47,7 +47,15 @@ cloudinary.config({
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  cors: corsConfig,
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:4173",
+      "https://friend--me.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  },
 });
 
 app.set("io", io);
@@ -55,7 +63,17 @@ app.set("io", io);
 // Using Middlewares Here
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:4173",
+      "https://friend--me.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/chat", chatRoute);
